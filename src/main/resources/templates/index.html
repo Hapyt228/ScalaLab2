@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Метрика Джилба: Scala</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 30px; background: #f7f8fa; }
+        textarea { width: 100%; height: 360px; font-family: Consolas, monospace; font-size: 14px; }
+        button { padding: 10px 22px; background: #2c3e50; color: #fff; border: 0; border-radius: 4px; cursor: pointer; }
+        table { border-collapse: collapse; background: #fff; margin: 10px 0 20px; }
+        th, td { border: 1px solid #ccc; padding: 6px 14px; text-align: center; }
+        th { background: #2c3e50; color: #fff; }
+        .card { background: #fff; border: 1px solid #ddd; border-radius: 6px; padding: 12px 20px; margin: 15px 0; }
+        .warn { color: #b03a2e; }
+        .big { font-size: 18px; }
+    </style>
+</head>
+<body>
+<h2>Метрика Джилба для программы на Scala</h2>
+
+<form action="/analyze" method="post">
+    <textarea name="source" th:text="${source}"></textarea><br><br>
+    <button type="submit">Рассчитать</button>
+</form>
+
+<div th:if="${result != null}">
+    <div class="card big">
+        <p>Абсолютная сложность CL = <b th:text="${result.cl()}"></b></p>
+        <p>Общее число операторов n = <b th:text="${result.totalOperators()}"></b></p>
+        <p>Относительная сложность cl = CL / n = <b th:text="${result.relativeText()}"></b></p>
+        <p>Максимальный уровень вложенности CLI = <b th:text="${result.maxNesting()}"></b>
+            (при отсчёте с 0: <b th:text="${result.maxNestingFromZero()}"></b>)</p>
+    </div>
+
+    <div class="card warn" th:if="${!result.warnings().isEmpty()}">
+        <p th:each="w : ${result.warnings()}" th:text="${w}"></p>
+    </div>
+
+    <h3>Найденные управляющие операторы</h3>
+    <table>
+        <tr><th>№</th><th>Оператор</th><th>Строка</th><th>Уровень</th><th>Вклад в CL</th></tr>
+        <tr th:each="c, st : ${result.controls()}">
+            <td th:text="${st.count}"></td>
+            <td th:text="${c.type()}"></td>
+            <td th:text="${c.line()}"></td>
+            <td th:text="${c.depth()}"></td>
+            <td th:text="${c.weight()}"></td>
+        </tr>
+    </table>
+
+    <h3>Операторы, учтённые в n</h3>
+    <table>
+        <tr><th>№</th><th>Строка</th><th>Оператор</th></tr>
+        <tr th:each="s, st : ${result.statements()}">
+            <td th:text="${st.count}"></td>
+            <td th:text="${s.line()}"></td>
+            <td th:text="${s.text()}" style="text-align:left"></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
