@@ -180,7 +180,7 @@ public class GilbAnalyzer {
                 default -> { }
             }
         }
-        return 0;
+        return -1;
     }
 
     private int countCases(List<Tok> toks, int from) {

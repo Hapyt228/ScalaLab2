@@ -15,10 +15,6 @@ public record GilbResult(
 
     public record StmtItem(int line, String text) {}
 
-    public int maxNestingFromZero() {
-        return Math.max(0, maxNesting - 1);
-    }
-
     public String relativeText() {
         return String.format("%.4f", relative);
     }

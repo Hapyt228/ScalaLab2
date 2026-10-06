@@ -28,8 +28,7 @@
         <p>Абсолютная сложность CL = <b th:text="${result.cl()}"></b></p>
         <p>Общее число операторов n = <b th:text="${result.totalOperators()}"></b></p>
         <p>Относительная сложность cl = CL / n = <b th:text="${result.relativeText()}"></b></p>
-        <p>Максимальный уровень вложенности CLI = <b th:text="${result.maxNesting()}"></b>
-            (при отсчёте с 0: <b th:text="${result.maxNestingFromZero()}"></b>)</p>
+        <p>Максимальный уровень вложенности CLI = <b th:text="${result.maxNesting()}"></b></p>
     </div>
 
     <div class="card warn" th:if="${!result.warnings().isEmpty()}">
